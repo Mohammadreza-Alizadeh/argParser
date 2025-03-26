@@ -1,7 +1,6 @@
-# Arg Parser
+# Bash script ArgParser
 
-
-A reusable, type-aware argument parser for Bash scripts
+A reusable, type-aware argument parser for Bash scripts to help you undrestand what a user say
 
 i didn't find a minimal and no-dependency module to use when my scripts need `Argument Parsing`, so here we are.
 
@@ -16,21 +15,46 @@ for anyone wonders, this script is influenced from `python's argparse`
 - Auto help generation
 
 
-## 🚀 Usage
+
+## 🧩 Usage
+
+### 🏗 Define Options
+
+Use the `define_option` function:
 
 ```bash
-source ./lib/argparser.bash
+define_option SHORT LONG HAS_ARG DESCRIPTION REQUIRED TYPE DEFAULT
+```
 
-define_option "f" "file" "yes" "Input file" "required" "file"
-define_option "n" "number" "yes"  "Number of threads" "optional" "file"
+| Parameter     | Description                                      |
+|---------------|--------------------------------------------------|
+| `SHORT`       | Single-letter flag (e.g. `f` for `-f`)           |
+| `LONG`        | Long-form flag (e.g. `file` for `--file`)        |
+| `HAS_ARG`     | `"yes"` if flag takes an argument, otherwise `"no"` |
+| `DESCRIPTION` | Help description shown to users                 |
+| `REQUIRED`    | `"required"` or `"optional"`                     |
+| `TYPE`        | `file`, `number`, `dir`, or leave empty for any |
+| `DEFAULT`     | Default value if not provided (optional only)    |
 
+### 🧪 Example
+
+```bash
+define_option "f" "file" "yes" "Input file" "required" "file" ""
+define_option "n" "number" "yes" "Number of threads" "optional" "number" "21"
+define_option "d" "directory" "yes" "Input directory" "optional" "dir" ""
+define_option "s" "label" "yes" "Label name" "optional" "" ""
+```
+
+---
+
+### 🚀 Parsing and Accessing Values
+
+```bash
 parse_args "$@"
-
-echo "File: ${ARGS[file]}"
-echo "Threads: ${ARGS[number]}"
+echo "${ARGS[file]}"
+echo "${ARGS[number]}"
 ```
 
-Run the example:
-```bash
-bash examples/demo.sh --file ./somefile.txt --number 5
-```
+
+see the `examples` directory for a in action use of script
+
